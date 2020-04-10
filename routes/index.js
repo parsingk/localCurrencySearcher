@@ -36,7 +36,6 @@ router.get('/data', function(req, res, next) {
         return res.send(result);
       });
     }
-    conn.release();
   });
 });
 
