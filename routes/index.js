@@ -12,11 +12,22 @@ router.get('/data', function(req, res, next) {
 
   let lat = query.lat;
   let lng = query.lng;
+  let search = query.search;
+  let type = query.type;
   let range = 1000;
+
+  console.log(query);
 
   db.getConnection((err, conn) => {
     if(!err) {
-      let sql = `SELECT * FROM Place WHERE ST_DISTANCE_SPHERE(POINT(${lng}, ${lat}), geo_location) < ${range}`;
+      let sql = '';
+      if(search) {
+        sql = `SELECT * FROM Place WHERE name LIKE '%${search}%'`;
+      } else if(type) {
+        sql = `SELECT * FROM Place WHERE ST_DISTANCE_SPHERE(POINT(${lng}, ${lat}), geo_location) < ${range} AND type = ${type}`;
+      } else {
+        sql = `SELECT * FROM Place WHERE ST_DISTANCE_SPHERE(POINT(${lng}, ${lat}), geo_location) < ${range}`;
+      }
 
       conn.query(sql, (error, result, fields) => {
         if(error) {

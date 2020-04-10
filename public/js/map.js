@@ -1,4 +1,10 @@
 const greenMarker = "/img/greenMarker.png";
+const coffeeMarker = "/img/coffee.png";
+const dinnerMarker = "/img/dinner.png";
+const storeMarker = "/img/store.png";
+const martMarker = "/img/mart.png";
+const bakeryMarker = "/img/bakery.png";
+
 const green = 'lawngreen';
 const apiUrl = '/data';
 const range = '1000';
@@ -13,6 +19,7 @@ let options = { //지도를 생성할 때 필요한 기본 옵션
 
 let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 let markers = [];
+let circle = null;
 
 function setCurrentPosition() {
     if (navigator.geolocation) {
@@ -34,8 +41,8 @@ kakao.maps.event.addListener(map, 'dragend', function() {
     centerLat = latlng.getLat();
     centerLng = latlng.getLng();
 
-    let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + range;
-    httpGetAsync(apiUrl + query, displayMarker);
+    // let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + range;
+    // httpGetAsync(apiUrl + query, displayMarker);
 });
 
 function isMarkerOnMap(lat, lng, arr = []) {
@@ -48,10 +55,31 @@ function isMarkerOnMap(lat, lng, arr = []) {
     return parseFloat(lng.toFixed(7));
 }
 
-function displayMarker(arr) {
+//0 기본\n1 음식점\n2 편의점\n3 카페\n4 베이커리, 떡, 샌드위치\n5 피자\n6 치킨\n\n101 헤어샵\n102 마트
+function getMarkerImg(type) {
+    switch (type) {
+        case 1 :
+        case 5 :
+        case 6 :
+            return dinnerMarker;
+        case 2 :
+            return storeMarker;
+        case 3 :
+            return coffeeMarker;
+        case 4 :
+            return bakeryMarker;
+        case 102 :
+            return martMarker;
+        default :
+            return greenMarker;
+    }
+}
+
+function displayMarker(arr, isSearch) {
     let latLngArray = [];
     let lat = null;
     let lng = null;
+    let imageSize = null;
 
     markers.forEach(function (m) {
         m.setMap(null);
@@ -59,13 +87,24 @@ function displayMarker(arr) {
 
     markers = [];
 
+    if(isSearch) {
+        map.setLevel(9);
+    }
+
     arr.forEach(function (store) {
         lat = store.geo_location.y;
         lng = store.geo_location.x;
         lng = isMarkerOnMap(lat, lng, latLngArray);
 
-        let markerPath = greenMarker;
-        let imageSize = new kakao.maps.Size(24, 35);
+        let type = store.type;
+        let markerPath = getMarkerImg(type);
+
+        if(type > 0) {
+            imageSize = new kakao.maps.Size(22, 26);
+        } else {
+            imageSize = new kakao.maps.Size(22, 33);
+        }
+
         let markerImage = new kakao.maps.MarkerImage(markerPath, imageSize);
         let marker = new kakao.maps.Marker({
             map: map,
@@ -122,12 +161,29 @@ function getOverlayContent(store, overlay) {
     return content;
 }
 
-function httpGetAsync(theUrl, callback)
+function displayCircle() {
+    if(circle != null) circle.setMap(null);
+
+    circle = new kakao.maps.Circle({
+        center : new kakao.maps.LatLng(centerLat, centerLng),  // 원의 중심좌표 입니다
+        radius: 1000, // 미터 단위의 원의 반지름입니다
+        strokeWeight: 1, // 선의 두께입니다
+        strokeColor: '#75B8FA', // 선의 색깔입니다
+        strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        strokeStyle: 'solid', // 선의 스타일 입니다
+        fillColor: '#CFE7FF', // 채우기 색깔입니다
+        fillOpacity: 0.7  // 채우기 불투명도 입니다
+    });
+
+    circle.setMap(map);
+}
+
+function httpGetAsync(theUrl, callback, isSearch)
 {
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            callback(JSON.parse(xmlHttp.responseText));
+            callback(JSON.parse(xmlHttp.responseText), isSearch);
     };
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.send();
@@ -135,4 +191,41 @@ function httpGetAsync(theUrl, callback)
 
 document.addEventListener("DOMContentLoaded", function(event) {
     setCurrentPosition();
+
+    $("#btn-search").click(function () {
+        let search = $("#searchText").val();
+
+        if(search.length === 0) return;
+
+        httpGetAsync(apiUrl + '?search=' + search, displayMarker, true);
+    });
+
+    $("#nearby-search").click(function () {
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + 2000;
+        httpGetAsync(apiUrl + query, displayMarker);
+        displayCircle();
+    });
+
+
+    //0 기본\n1 음식점\n2 편의점\n3 카페\n4 베이커리, 떡, 샌드위치\n5 피자\n6 치킨\n\n101 헤어샵\n102 마트
+    $("#dinner").click(function () {
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + 2000+ '&type=1';
+        httpGetAsync(apiUrl + query, displayMarker);
+        displayCircle();
+    });
+    $("#mart").click(function () {
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + 2000+ '&type=102';
+        httpGetAsync(apiUrl + query, displayMarker);
+        displayCircle();
+    });
+    $("#cafe").click(function () {
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + 2000 + '&type=3';
+        httpGetAsync(apiUrl + query, displayMarker);
+        displayCircle();
+    });
+    $("#store").click(function () {
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + 2000+ '&type=2';
+        httpGetAsync(apiUrl + query, displayMarker);
+        displayCircle();
+    });
 });
