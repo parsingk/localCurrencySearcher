@@ -199,6 +199,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         if(search.length === 0) return;
 
         httpGetAsync(apiUrl + '?search=' + search, displayMarker, true);
+        if(circle != null) circle.setMap(null);
     });
 
     $("#nearby-search").click(function () {
