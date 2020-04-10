@@ -16,8 +16,6 @@ router.get('/data', function(req, res, next) {
   let type = query.type;
   let range = 1000;
 
-  console.log(query);
-
   db.getConnection((err, conn) => {
     if(!err) {
       let sql = '';

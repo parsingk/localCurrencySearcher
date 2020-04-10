@@ -190,6 +190,7 @@ function httpGetAsync(theUrl, callback, isSearch)
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
+    $('#alertModal').modal('show');
     setCurrentPosition();
 
     $("#btn-search").click(function () {
