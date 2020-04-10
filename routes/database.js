@@ -4,8 +4,8 @@ const dbConfig = {
     port     : '3306',
     user     : 'root',
     password : '1q2w3e4r!!@@',
-    database : 'localCurrency',
-    socketPath: '/cloudsql/mask-270506:asia-northeast3:main-sql'
+    database : 'localCurrency'
+    ,socketPath: '/cloudsql/mask-270506:asia-northeast3:main-sql'
 };
 const pool = mysql.createPool(dbConfig);
 

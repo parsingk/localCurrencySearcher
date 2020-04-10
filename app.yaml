@@ -1,2 +1,2 @@
-service: gglocalcurrency
+service: ggcurrency
 runtime: nodejs10

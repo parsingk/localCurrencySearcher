@@ -14,7 +14,7 @@ let centerLng = 127.1100797;
 let container = document.getElementById('map');
 let options = { //지도를 생성할 때 필요한 기본 옵션
     center: new kakao.maps.LatLng(centerLat, centerLng), //지도의 중심좌표.
-    level: 5 //지도의 레벨(확대, 축소 정도)
+    level: 6 //지도의 레벨(확대, 축소 정도)
 };
 
 let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
@@ -172,7 +172,7 @@ function displayCircle() {
         strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         strokeStyle: 'solid', // 선의 스타일 입니다
         fillColor: '#CFE7FF', // 채우기 색깔입니다
-        fillOpacity: 0.7  // 채우기 불투명도 입니다
+        fillOpacity: 0.5  // 채우기 불투명도 입니다
     });
 
     circle.setMap(map);

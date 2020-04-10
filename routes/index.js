@@ -16,7 +16,12 @@ router.get('/data', function(req, res, next) {
   let type = query.type;
   let range = 1000;
 
-  db.getConnection((err, conn) => {
+  return db.getConnection((err, conn) => {
+    if(err) {
+      console.log(err);
+      return res.render('error');
+    }
+
     if(!err) {
       let sql = '';
       if(search) {
@@ -28,6 +33,7 @@ router.get('/data', function(req, res, next) {
       }
 
       conn.query(sql, (error, result, fields) => {
+        conn.release();
         if(error) {
           console.log(error);
           return res.render('error');
