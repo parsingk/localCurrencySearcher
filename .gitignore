@@ -1,0 +1,8 @@
+.idea
+*.iml
+out
+gen
+.idea/
+localSearcher.iml
+node_modules/
+package-lock.json
