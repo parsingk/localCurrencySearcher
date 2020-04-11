@@ -14,7 +14,6 @@ router.get('/data', function(req, res, next) {
   let lng = query.lng;
   let search = query.search;
   let type = query.type;
-  let range = 1000;
 
   return db.getConnection((err, conn) => {
     if(err) {
@@ -25,22 +24,31 @@ router.get('/data', function(req, res, next) {
     if(!err) {
       let sql = '';
       if(search) {
-        sql = `SELECT * FROM Place WHERE name LIKE '%${search}%'`;
-      } else if(type) {
-        sql = `SELECT * FROM Place WHERE ST_DISTANCE_SPHERE(POINT(${lng}, ${lat}), geo_location) < ${range} AND type = ${type}`;
+        sql = `SELECT * FROM Place WHERE MATCH(name) AGAINST('${search}*' IN BOOLEAN MODE)`;
+
+        conn.query(sql, (error, result, fields) => {
+          conn.release();
+          if(error) {
+            console.log(error);
+            return res.render('error');
+          }
+
+          return res.send(result);
+        });
       } else {
-        sql = `SELECT * FROM Place WHERE ST_DISTANCE_SPHERE(POINT(${lng}, ${lat}), geo_location) < ${range}`;
+        sql = `CALL PROC_GET_STORES_BY_LOCATION(?,?,?)`;
+
+        conn.query(sql, [lat, lng, type], (error, result, fields) => {
+          conn.release();
+          if(error) {
+            console.log(error);
+            return res.render('error');
+          }
+
+          return res.send(result[0]);
+        });
       }
 
-      conn.query(sql, (error, result, fields) => {
-        conn.release();
-        if(error) {
-          console.log(error);
-          return res.render('error');
-        }
-
-        return res.send(result);
-      });
     }
   });
 });

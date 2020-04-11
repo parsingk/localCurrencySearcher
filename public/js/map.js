@@ -7,7 +7,6 @@ const bakeryMarker = "/img/bakery.png";
 
 const green = 'lawngreen';
 const apiUrl = '/data';
-const range = '1000';
 
 let centerLat = 37.394914;
 let centerLng = 127.1100797;
@@ -29,7 +28,7 @@ function setCurrentPosition() {
 
             let locPosition = new kakao.maps.LatLng(centerLat, centerLng);
 
-            let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + range;
+            let query = '?lat=' + centerLat + '&lng=' + centerLng;
             httpGetAsync(apiUrl + query, displayMarker);
             map.setCenter(locPosition);
         });
@@ -166,7 +165,7 @@ function displayCircle() {
 
     circle = new kakao.maps.Circle({
         center : new kakao.maps.LatLng(centerLat, centerLng),  // 원의 중심좌표 입니다
-        radius: 1000, // 미터 단위의 원의 반지름입니다
+        radius: 1300, // 미터 단위의 원의 반지름입니다
         strokeWeight: 1, // 선의 두께입니다
         strokeColor: '#75B8FA', // 선의 색깔입니다
         strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
@@ -211,22 +210,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     //0 기본\n1 음식점\n2 편의점\n3 카페\n4 베이커리, 떡, 샌드위치\n5 피자\n6 치킨\n\n101 헤어샵\n102 마트
     $("#dinner").click(function () {
-        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + 2000+ '&type=1';
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=1';
         httpGetAsync(apiUrl + query, displayMarker);
         displayCircle();
     });
     $("#mart").click(function () {
-        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + 2000+ '&type=102';
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=102';
         httpGetAsync(apiUrl + query, displayMarker);
         displayCircle();
     });
     $("#cafe").click(function () {
-        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + 2000 + '&type=3';
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=3';
         httpGetAsync(apiUrl + query, displayMarker);
         displayCircle();
     });
     $("#store").click(function () {
-        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + 2000+ '&type=2';
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=2';
         httpGetAsync(apiUrl + query, displayMarker);
         displayCircle();
     });
