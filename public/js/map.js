@@ -207,6 +207,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
             httpGetAsync(apiUrl + '?search=' + search, displayMarker, true);
             if(circle != null) circle.setMap(null);
+            $("#searchText").blur();
         }
     });
 
