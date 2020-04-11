@@ -4,6 +4,7 @@ const dinnerMarker = "/img/dinner.png";
 const storeMarker = "/img/store.png";
 const martMarker = "/img/mart.png";
 const bakeryMarker = "/img/bakery.png";
+const locationMarker = "/img/location.png";
 
 const green = 'lawngreen';
 const apiUrl = '/data';
@@ -13,12 +14,13 @@ let centerLng = 127.1100797;
 let container = document.getElementById('map');
 let options = { //지도를 생성할 때 필요한 기본 옵션
     center: new kakao.maps.LatLng(centerLat, centerLng), //지도의 중심좌표.
-    level: 6 //지도의 레벨(확대, 축소 정도)
+    level: 5 //지도의 레벨(확대, 축소 정도)
 };
 
 let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 let markers = [];
 let circle = null;
+let g_overlay = null;
 
 function setCurrentPosition() {
     if (navigator.geolocation) {
@@ -124,7 +126,12 @@ function displayMarker(arr, isSearch) {
         });
         markers.push(marker);
         kakao.maps.event.addListener(marker, 'click', function() {
+            if(g_overlay != null) {
+                g_overlay.setMap(null);
+            }
+
             overlay.setMap(map);
+            g_overlay = overlay;
         });
     });
 }
@@ -165,7 +172,7 @@ function displayCircle() {
 
     circle = new kakao.maps.Circle({
         center : new kakao.maps.LatLng(centerLat, centerLng),  // 원의 중심좌표 입니다
-        radius: 1300, // 미터 단위의 원의 반지름입니다
+        radius: 700, // 미터 단위의 원의 반지름입니다
         strokeWeight: 1, // 선의 두께입니다
         strokeColor: '#75B8FA', // 선의 색깔입니다
         strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
@@ -192,6 +199,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $('#alertModal').modal('show');
     setCurrentPosition();
 
+    $("#searchText").keypress(function(e) {
+        if(e.keyCode == 13) {
+            let search = $("#searchText").val();
+
+            if(search.length === 0) return;
+
+            httpGetAsync(apiUrl + '?search=' + search, displayMarker, true);
+            if(circle != null) circle.setMap(null);
+        }
+    });
+
     $("#btn-search").click(function () {
         let search = $("#searchText").val();
 
@@ -201,8 +219,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         if(circle != null) circle.setMap(null);
     });
 
-    $("#nearby-search").click(function () {
-        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&m=' + 2000;
+    $("#location").click(function () {
+        let query = '?lat=' + centerLat + '&lng=' + centerLng;
         httpGetAsync(apiUrl + query, displayMarker);
         displayCircle();
     });
@@ -226,6 +244,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
     $("#store").click(function () {
         let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=2';
+        httpGetAsync(apiUrl + query, displayMarker);
+        displayCircle();
+    });
+    $("#bakery").click(function () {
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=4';
         httpGetAsync(apiUrl + query, displayMarker);
         displayCircle();
     });
