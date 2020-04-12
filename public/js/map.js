@@ -184,12 +184,14 @@ function displayCircle() {
     circle.setMap(map);
 }
 
-function httpGetAsync(theUrl, callback, isSearch)
-{
+function httpGetAsync(theUrl, callback, isSearch) {
+    $("#loading").modal('show');
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
             callback(JSON.parse(xmlHttp.responseText), isSearch);
+            $("#loading").modal('hide');
+        }
     };
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.send();

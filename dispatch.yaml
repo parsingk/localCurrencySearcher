@@ -1,3 +1,5 @@
 dispatch:
   - url: "gg-currency.kr/*"
     service: ggcurrency
+  - url: "www.gg-currency.kr/*"
+    service: ggcurrency
