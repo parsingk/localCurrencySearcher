@@ -4,7 +4,7 @@ const dinnerMarker = "/img/dinner.png";
 const storeMarker = "/img/store.png";
 const martMarker = "/img/mart.png";
 const bakeryMarker = "/img/bakery.png";
-const locationMarker = "/img/location.png";
+const hairMarker = "/img/barbershop.png";
 
 const green = 'lawngreen';
 const apiUrl = '/data';
@@ -69,6 +69,8 @@ function getMarkerImg(type) {
             return coffeeMarker;
         case 4 :
             return bakeryMarker;
+        case 101 :
+            return hairMarker;
         case 102 :
             return martMarker;
         default :
@@ -252,6 +254,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
     $("#bakery").click(function () {
         let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=4';
+        httpGetAsync(apiUrl + query, displayMarker);
+        displayCircle();
+    });
+    $("#hair").click(function () {
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=101';
         httpGetAsync(apiUrl + query, displayMarker);
         displayCircle();
     });
