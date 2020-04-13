@@ -11,12 +11,12 @@
     <meta name="description" content="지도에서 경기지역화폐 가맹점, 사용처 찾기, 분류, 검색 등 제공">
     <meta name="robots" content="index,follow">
     <title>경기지역화폐 사용처</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/main.css">
     <!--<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=07962526a491f013dccf7f5231f710bd"></script>-->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="/js/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script data-ad-client="ca-pub-9087836240057599" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   </head>
   <body>
@@ -46,33 +46,37 @@
   <div class="map_wrap">
     <div id="map" style="width:100%;height:100vh;"></div>
     <ul id="category">
-      <li id="location" data-order="1">
-        <span><img src="/img/location.png" width="25px" /></span>
-        전체
-      </li>
-      <li id="dinner" data-order="2">
+      <li id="dinner" data-order="1">
         <span><img src="/img/dinner.png" width="25px" /></span>
         음식점
       </li>
-      <li id="mart" data-order="3">
+      <li id="mart" data-order="2">
         <span><img src="/img/mart.png" width="25px" /></span>
         마트
       </li>
-      <li id="cafe" data-order="4">
+      <li id="cafe" data-order="3">
         <span><img src="/img/coffee.png" width="25px" /></span>
         카페
       </li>
-      <li id="store" data-order="5">
+      <li id="store" data-order="4">
         <span><img src="/img/store.png" width="25px" /></span>
-        슈퍼
+        편의점
       </li>
-      <li id="bakery" data-order="6">
+      <li id="bakery" data-order="1">
         <span><img src="/img/bakery.png" width="25px" /></span>
         베이커리
       </li>
-      <li id="hair" data-order="1">
+      <li id="hair" data-order="2">
         <span><img src="/img/barbershop.png" width="25px" /></span>
         헤어샵
+      </li>
+      <li id="fuel" data-order="3">
+        <span><img src="/img/fuel.png" width="25px" /></span>
+        주유소
+      </li>
+      <li id="etc" data-order="4">
+        <span><img src="/img/etc.png" width="25px" /></span>
+        기타
       </li>
     </ul>
   </div>
@@ -89,13 +93,13 @@
           </button>
         </div>
         <div class="modal-body">
-          <div>성남, 안산, 안양, 수원 지역만 가능합니다.</div>
-          <div style="font-weight: bold;">빠른 시일 내에 다른 지역 추가 업데이트 예정입니다.</div>
-          <div style="margin-top: 20px; font-size: 12px;">
+          <div style="font-size: 12px;">
             <div>++ 2020-04-10 성남시 데이터 추가</div>
             <div>++ 2020-04-11 안산시 데이터 추가</div>
-            <div>++ 2020-04-12 안양시, 수원시 데이터 추가</div>
+            <div>++ 2020-04-12 안양시, 수원시, 광주시, 용인시 데이터 추가</div>
+            <div>++ 2020-04-14 오산시 데이터 추가</div>
           </div>
+          <div style="margin-top: 20px; font-weight: bold;">이외 지역 업데이트 예정입니다.</div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>

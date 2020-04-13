@@ -5,6 +5,8 @@ const storeMarker = "/img/store.png";
 const martMarker = "/img/mart.png";
 const bakeryMarker = "/img/bakery.png";
 const hairMarker = "/img/barbershop.png";
+const fuelMarker = "/img/fuel.png";
+const redMarker = "/img/red_location.png";
 
 const green = 'lawngreen';
 const apiUrl = '/data';
@@ -58,24 +60,27 @@ function isMarkerOnMap(lat, lng, arr = []) {
 
 //0 기본\n1 음식점\n2 편의점\n3 카페\n4 베이커리, 떡, 샌드위치\n5 피자\n6 치킨\n\n101 헤어샵\n102 마트
 function getMarkerImg(type) {
-    switch (type) {
-        case 1 :
-        case 5 :
-        case 6 :
-            return dinnerMarker;
-        case 2 :
-            return storeMarker;
-        case 3 :
-            return coffeeMarker;
-        case 4 :
-            return bakeryMarker;
-        case 101 :
-            return hairMarker;
-        case 102 :
-            return martMarker;
-        default :
-            return greenMarker;
-    }
+    return redMarker;
+    // switch (type) {
+    //     case 1 :
+    //     case 5 :
+    //     case 6 :
+    //         return dinnerMarker;
+    //     case 2 :
+    //         return storeMarker;
+    //     case 3 :
+    //         return coffeeMarker;
+    //     case 4 :
+    //         return bakeryMarker;
+    //     case 8 :
+    //         return fuelMarker;
+    //     case 101 :
+    //         return hairMarker;
+    //     case 102 :
+    //         return martMarker;
+    //     default :
+    //         return greenMarker;
+    // }
 }
 
 function displayMarker(arr, isSearch) {
@@ -102,12 +107,12 @@ function displayMarker(arr, isSearch) {
         let type = store.type;
         let markerPath = getMarkerImg(type);
 
-        if(type > 0) {
-            imageSize = new kakao.maps.Size(22, 26);
-        } else {
-            imageSize = new kakao.maps.Size(22, 33);
-        }
-
+        // if(type > 0) {
+        //     imageSize = new kakao.maps.Size(22, 26);
+        // } else {
+        //     imageSize = new kakao.maps.Size(22, 33);
+        // }
+        imageSize = new kakao.maps.Size(22, 26);
         let markerImage = new kakao.maps.MarkerImage(markerPath, imageSize);
         let marker = new kakao.maps.Marker({
             map: map,
@@ -148,7 +153,7 @@ function getOverlayContent(store, overlay) {
     let title = document.createElement('div');
     let color = green;
     title.classList.add('title');
-    title.style.backgroundColor = color;
+    // title.style.backgroundColor = color;
     title.style.color = 'black';
     title.appendChild(document.createTextNode(store.name));
 
@@ -158,7 +163,21 @@ function getOverlayContent(store, overlay) {
 
     let body = document.createElement('div');
     body.classList.add('body');
-    body.appendChild(document.createTextNode('tel : ' + store.tel));
+
+    let bodyTop = document.createElement('div');
+    if(store.addr_road.length > 0) {
+        bodyTop.appendChild(document.createTextNode('주소: ' + store.addr_road));
+    } else {
+        bodyTop.appendChild(document.createTextNode('주소: ' + store.addr));
+    }
+
+    let bodyBottom = document.createElement('div');
+    if(store.tel.length > 0) {
+        bodyBottom.appendChild(document.createTextNode('tel : ' + store.tel));
+    }
+
+    body.appendChild(bodyTop);
+    body.appendChild(bodyBottom);
 
     content.appendChild(info);
     info.appendChild(title);
@@ -224,13 +243,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         if(circle != null) circle.setMap(null);
     });
 
-    $("#location").click(function () {
-        let query = '?lat=' + centerLat + '&lng=' + centerLng;
-        httpGetAsync(apiUrl + query, displayMarker);
-        displayCircle();
-    });
-
-
     //0 기본\n1 음식점\n2 편의점\n3 카페\n4 베이커리, 떡, 샌드위치\n5 피자\n6 치킨\n\n101 헤어샵\n102 마트
     $("#dinner").click(function () {
         let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=1';
@@ -259,6 +271,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
     $("#hair").click(function () {
         let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=101';
+        httpGetAsync(apiUrl + query, displayMarker);
+        displayCircle();
+    });
+    $("#fuel").click(function () {
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=8';
+        httpGetAsync(apiUrl + query, displayMarker, true);
+        displayCircle();
+    });
+    $("#etc").click(function () {
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=0';
         httpGetAsync(apiUrl + query, displayMarker);
         displayCircle();
     });
