@@ -95,10 +95,9 @@
         </div>
         <div class="modal-body">
           <div style="font-size: 12px;">
-            <div>++ 2020-04-10 성남시 데이터 추가</div>
-            <div>++ 2020-04-11 안산시 데이터 추가</div>
-            <div>++ 2020-04-12 안양시, 수원시, 광주시, 용인시 데이터 추가</div>
-            <div>++ 2020-04-14 오산시 데이터 추가</div>
+            <% data.forEach(function (e, index) { %>
+                <div><%= e.content %></div>
+            <% }); %>
           </div>
           <div style="margin-top: 20px; font-weight: bold;">이외 지역 업데이트 예정입니다.</div>
         </div>

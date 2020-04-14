@@ -4,7 +4,25 @@ const db = require('./database');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { data: 'Express' });
+
+  return db.getConnection((err, conn) => {
+    if(err) {
+      console.log(err);
+      return res.render('error');
+    }
+
+    let sql = `SELECT * FROM notice ORDER BY idx`;
+
+    conn.query(sql, (error, result, fields) => {
+      conn.release();
+      if(error) {
+        console.log(error);
+        return res.render('index', { data: [] });
+      }
+
+      return res.render('index', { data: result });
+    });
+  });
 });
 
 router.get('/data', function(req, res, next) {
