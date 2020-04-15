@@ -36,8 +36,11 @@ function setCurrentPosition() {
             httpGetAsync(apiUrl + query, displayMarker);
             map.setCenter(locPosition);
         }, function(err) {
-            console.log(err);
-        }, {timeout: 1000});
+            console.error(err);
+            if(err.TIMEOUT) {
+                console.error('Get Current Position Timeout.');
+            }
+        }, {timeout: 2000});
     }
 }
 
@@ -210,27 +213,14 @@ function displayCircle() {
 function httpGetAsync(theUrl, callback, isSearch) {
     $("#loading").modal('show');
 
-    // $.ajax({
-    //     url: theUrl,
-    //     success: function (data) {
-    //         callback(JSON.parse(data), isSearch);
-    //     },
-    //     error: function (data) {
-    //         console.log(data);
-    //         $("#errorModal").modal('show');
-    //     },
-    //     complete: function () {
-    //         $("#loading").modal('hide');
-    //     }
-    // })
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            console.log(1111);
-            callback(JSON.parse(xmlHttp.responseText), isSearch);
-        } else {
-            console.log(222);
-            $("#errorModal").modal('show');
+        if (xmlHttp.readyState == 4) {
+            if(xmlHttp.status == 200) {
+                callback(JSON.parse(xmlHttp.responseText), isSearch);
+            } else {
+                $("#errorModal").modal('show');
+            }
         }
         $("#loading").modal('hide');
     };
