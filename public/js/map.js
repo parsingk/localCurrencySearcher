@@ -35,7 +35,12 @@ function setCurrentPosition() {
             let query = '?lat=' + centerLat + '&lng=' + centerLng;
             httpGetAsync(apiUrl + query, displayMarker);
             map.setCenter(locPosition);
-        });
+        }, function(err) {
+            console.error(err);
+            if(err.TIMEOUT) {
+                console.error('Get Current Position Timeout.');
+            }
+        }, {timeout: 1000});
     }
 }
 
@@ -207,12 +212,17 @@ function displayCircle() {
 
 function httpGetAsync(theUrl, callback, isSearch) {
     $("#loading").modal('show');
+
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            callback(JSON.parse(xmlHttp.responseText), isSearch);
-            $("#loading").modal('hide');
+        if (xmlHttp.readyState == 4) {
+            if(xmlHttp.status == 200) {
+                callback(JSON.parse(xmlHttp.responseText), isSearch);
+            } else {
+                $("#errorModal").modal('show');
+            }
         }
+        $("#loading").modal('hide');
     };
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.send();

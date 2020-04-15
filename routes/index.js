@@ -7,8 +7,8 @@ router.get('/', function(req, res, next) {
 
   return db.getConnection((err, conn) => {
     if(err) {
-      console.log(err);
-      return res.render('error');
+      console.error(err);
+      return res.render('error', {"error" : {"code" : 500, "message" : "서버 점검중입니다.", "enquiry" : "문의 : whdvlf2006@gmail.com"}});
     }
 
     let sql = `SELECT * FROM notice ORDER BY idx`;
@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
     conn.query(sql, (error, result, fields) => {
       conn.release();
       if(error) {
-        console.log(error);
+        console.error(error);
         return res.render('index', { data: [] });
       }
 
@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.get('/data', function(req, res, next) {
+router.get('/data', (req, res, next) => {
   let query = req.query;
 
   let lat = query.lat;
@@ -35,8 +35,8 @@ router.get('/data', function(req, res, next) {
 
   return db.getConnection((err, conn) => {
     if(err) {
-      console.log(err);
-      return res.render('error');
+      console.error(err);
+      return res.status(500).send({error : "Unexpected Server Error."});
     }
 
     if(!err) {
@@ -47,8 +47,8 @@ router.get('/data', function(req, res, next) {
         conn.query(sql, (error, result, fields) => {
           conn.release();
           if(error) {
-            console.log(error);
-            return res.render('error');
+            console.error(error);
+            return res.status(500).send({error : "잘못된 검색어 입니다."});
           }
 
           return res.send(result);
@@ -59,14 +59,13 @@ router.get('/data', function(req, res, next) {
         conn.query(sql, [lat, lng, type], (error, result, fields) => {
           conn.release();
           if(error) {
-            console.log(error);
-            return res.render('error');
+            console.error(error);
+            return res.status(500).send({error : "Unexpected Server Error : -01924281"});
           }
 
           return res.send(result[0]);
         });
       }
-
     }
   });
 });
