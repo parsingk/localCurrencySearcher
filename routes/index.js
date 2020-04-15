@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
   return db.getConnection((err, conn) => {
     if(err) {
       console.error(err);
-      return res.render('error');
+      return res.render('error', {"error" : {"code" : 500, "message" : "서버 점검중입니다.", "enquiry" : "문의 : whdvlf2006@gmail.com"}});
     }
 
     let sql = `SELECT * FROM notice ORDER BY idx`;

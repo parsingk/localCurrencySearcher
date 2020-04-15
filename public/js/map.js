@@ -40,7 +40,7 @@ function setCurrentPosition() {
             if(err.TIMEOUT) {
                 console.error('Get Current Position Timeout.');
             }
-        }, {timeout: 2000});
+        }, {timeout: 1000});
     }
 }
 
