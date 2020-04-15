@@ -216,13 +216,13 @@ function httpGetAsync(theUrl, callback, isSearch) {
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4) {
-            if(xmlHttp.status == 200) {
+            if (xmlHttp.status == 200) {
                 callback(JSON.parse(xmlHttp.responseText), isSearch);
             } else {
                 $("#errorModal").modal('show');
             }
+            $("#loading").modal('hide');
         }
-        $("#loading").modal('hide');
     };
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.send();
