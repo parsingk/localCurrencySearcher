@@ -221,8 +221,8 @@ function httpGetAsync(theUrl, callback, isSearch) {
             } else {
                 $("#errorModal").modal('show');
             }
+            $("#loading").modal('hide');
         }
-        $("#loading").modal('hide');
     };
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.send();
@@ -253,24 +253,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
         if(circle != null) circle.setMap(null);
     });
 
-    //0 기본\n1 음식점\n2 편의점\n3 카페\n4 베이커리, 떡, 샌드위치\n5 피자\n6 치킨\n\n101 헤어샵\n102 마트
+    //0 기본\n1 음식점\n2 편의점\n3 카페\n4 베이커리, 떡, 샌드위치\n5 피자\n6 치킨\n\n101 헤어샵\n102 마트 103병원 104약국
     $("#dinner").click(function () {
         let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=1';
         httpGetAsync(apiUrl + query, displayMarker);
         displayCircle();
     });
     $("#mart").click(function () {
-        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=102';
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=2';
         httpGetAsync(apiUrl + query, displayMarker);
         displayCircle();
     });
     $("#cafe").click(function () {
         let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=3';
-        httpGetAsync(apiUrl + query, displayMarker);
-        displayCircle();
-    });
-    $("#store").click(function () {
-        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=2';
         httpGetAsync(apiUrl + query, displayMarker);
         displayCircle();
     });
@@ -287,6 +282,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $("#fuel").click(function () {
         let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=8';
         httpGetAsync(apiUrl + query, displayMarker, true);
+        displayCircle();
+    });
+    $("#hospital").click(function () {
+        let query = '?lat=' + centerLat + '&lng=' + centerLng + '&type=103';
+        httpGetAsync(apiUrl + query, displayMarker);
         displayCircle();
     });
     $("#etc").click(function () {
