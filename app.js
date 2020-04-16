@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/robots.txt', express.static(path.join(__dirname, 'static/robots.txt')));
-app.use('/.well-known/acme-challenge/:id', express.static(path.join(__dirname, 'static/wellknown.txt')));
+app.use('/.well-known/acme-challenge/D_jOBW-qUL34yKfRaWHA9kvB-BspdXIbrB-buhcFWUo', express.static(path.join(__dirname, 'static/wellknown.txt')));
 
 app.use('/', (req, res, next) => {
   let host = req.headers.host;
