@@ -19,6 +19,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/robots.txt', express.static(path.join(__dirname, 'static/robots.txt')));
 app.use('/.well-known/acme-challenge/D_jOBW-qUL34yKfRaWHA9kvB-BspdXIbrB-buhcFWUo', express.static(path.join(__dirname, 'static/wellknown.txt')));
 
+app.use('/', (req, res, next) => {
+  let host = req.headers.host;
+
+  if(host !== 'localhost:3000') {
+    if (host === 'gg-currency.kr' && req.secure) {
+        res.redirect("https://www." + host + req.url);
+    } else if(!req.secure) {
+        res.redirect("https://" + host + req.url);
+    } else {
+      next();
+    }
+  }
+
+  next();
+});
+
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
