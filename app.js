@@ -21,18 +21,19 @@ app.use('/.well-known/acme-challenge/D_jOBW-qUL34yKfRaWHA9kvB-BspdXIbrB-buhcFWUo
 
 app.use('/', (req, res, next) => {
   let host = req.headers.host;
+  let protocol = req.headers['x-forwarded-proto'] || req.protocol;
 
   if(host !== 'localhost:3000') {
-    if (host === 'gg-currency.kr' && req.secure) {
+    if (host === 'gg-currency.kr' && protocol === 'https') {
         res.redirect("https://www." + host + req.url);
-    } else if(!req.secure) {
+    } else if(protocol !== 'https') {
         res.redirect("https://" + host + req.url);
     } else {
-      next();
+        next();
     }
+  } else {
+    next();
   }
-
-  next();
 });
 
 app.use('/', indexRouter);
