@@ -36,11 +36,11 @@ function setCurrentPosition() {
             httpGetAsync(apiUrl + query, displayMarker);
             map.setCenter(locPosition);
         }, function(err) {
-            console.error(err);
+            console.log(err);
             if(err.TIMEOUT) {
-                console.error('Get Current Position Timeout.');
+                console.log('Get Current Position Timeout.');
             }
-        }, {timeout: 2000});
+        }, {timeout: 5000});
     }
 }
 
