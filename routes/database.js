@@ -1,11 +1,11 @@
 const mysql      = require('mysql');
 const dbConfig = {
-    host     : '34.64.153.190',
+    host     : '#',
     port     : '3306',
-    user     : 'ggcurrency',
-    password : '1q2w3e4r!!@@##',
-    database : 'localCurrency',
-    connectionLimit : 50
+    user     : '#',
+    password : '#',
+    database : '#',
+    connectionLimit : #
     , socketPath: '/cloudsql/mask-270506:asia-northeast3:main-sql'
 };
 const pool = mysql.createPool(dbConfig);
