@@ -112,11 +112,6 @@ function displayMarker(arr, isSearch) {
         let type = store.type;
         let markerPath = getMarkerImg(type);
 
-        // if(type > 0) {
-        //     imageSize = new kakao.maps.Size(22, 26);
-        // } else {
-        //     imageSize = new kakao.maps.Size(22, 33);
-        // }
         imageSize = new kakao.maps.Size(22, 26);
         let markerImage = new kakao.maps.MarkerImage(markerPath, imageSize);
         let marker = new kakao.maps.Marker({
